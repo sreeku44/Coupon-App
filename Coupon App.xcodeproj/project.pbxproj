@@ -8,20 +8,40 @@
 
 /* Begin PBXBuildFile section */
 		DD4AC2BE1E92CEEE00F77037 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC2BD1E92CEEE00F77037 /* AppDelegate.swift */; };
-		DD4AC2C01E92CEEE00F77037 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC2BF1E92CEEE00F77037 /* ViewController.swift */; };
 		DD4AC2C31E92CEEE00F77037 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD4AC2C11E92CEEE00F77037 /* Main.storyboard */; };
 		DD4AC2C51E92CEEE00F77037 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD4AC2C41E92CEEE00F77037 /* Assets.xcassets */; };
 		DD4AC2C81E92CEEE00F77037 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD4AC2C61E92CEEE00F77037 /* LaunchScreen.storyboard */; };
+		DD4AC2D01E92CF6000F77037 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC2CF1E92CF6000F77037 /* LoginViewController.swift */; };
+		DD4AC2D31E94006200F77037 /* ShopNameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC2D21E94006200F77037 /* ShopNameTableViewController.swift */; };
+		DD4AC2D51E9400CC00F77037 /* AddCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC2D41E9400CC00F77037 /* AddCouponViewController.swift */; };
+		DD4AC2D71E9403BA00F77037 /* background.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DD4AC2D61E9403BA00F77037 /* background.jpeg */; };
+		DD4AC2DF1E941EB400F77037 /* ListOfCouponsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC2DE1E941EB400F77037 /* ListOfCouponsTableViewController.swift */; };
+		DD4AC3241E95F07100F77037 /* Coupon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC3221E95F07100F77037 /* Coupon.xcdatamodeld */; };
+		DD4AC3281E982F8600F77037 /* camera.JPG in Resources */ = {isa = PBXBuildFile; fileRef = DD4AC3271E982F8600F77037 /* camera.JPG */; };
+		DD4AC32A1E9C249700F77037 /* CouponDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC3291E9C249700F77037 /* CouponDetailsViewController.swift */; };
+		DD4AC32C1E9C24B200F77037 /* ShopDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC32B1E9C24B200F77037 /* ShopDetailViewController.swift */; };
+		DD4AC32E1E9D442900F77037 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC32D1E9D442900F77037 /* ImageTableViewCell.swift */; };
+		DD4AC3301E9D448500F77037 /* CouponListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AC32F1E9D448500F77037 /* CouponListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DD4AC2BA1E92CEEE00F77037 /* Coupon App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coupon App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD4AC2BD1E92CEEE00F77037 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DD4AC2BF1E92CEEE00F77037 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD4AC2C21E92CEEE00F77037 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DD4AC2C41E92CEEE00F77037 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD4AC2C71E92CEEE00F77037 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD4AC2C91E92CEEE00F77037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DD4AC2CF1E92CF6000F77037 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "Coupon App/LoginViewController.swift"; sourceTree = "<group>"; };
+		DD4AC2D21E94006200F77037 /* ShopNameTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopNameTableViewController.swift; sourceTree = "<group>"; };
+		DD4AC2D41E9400CC00F77037 /* AddCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCouponViewController.swift; sourceTree = "<group>"; };
+		DD4AC2D61E9403BA00F77037 /* background.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpeg; sourceTree = "<group>"; };
+		DD4AC2DE1E941EB400F77037 /* ListOfCouponsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListOfCouponsTableViewController.swift; sourceTree = "<group>"; };
+		DD4AC3231E95F07100F77037 /* Coupon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Coupon.xcdatamodel; sourceTree = "<group>"; };
+		DD4AC3271E982F8600F77037 /* camera.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = camera.JPG; sourceTree = "<group>"; };
+		DD4AC3291E9C249700F77037 /* CouponDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponDetailsViewController.swift; sourceTree = "<group>"; };
+		DD4AC32B1E9C24B200F77037 /* ShopDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopDetailViewController.swift; sourceTree = "<group>"; };
+		DD4AC32D1E9D442900F77037 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
+		DD4AC32F1E9D448500F77037 /* CouponListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +58,12 @@
 		DD4AC2B11E92CEEE00F77037 = {
 			isa = PBXGroup;
 			children = (
+				DD4AC32F1E9D448500F77037 /* CouponListTableViewCell.swift */,
+				DD4AC32D1E9D442900F77037 /* ImageTableViewCell.swift */,
+				DD4AC2D21E94006200F77037 /* ShopNameTableViewController.swift */,
+				DD4AC2D41E9400CC00F77037 /* AddCouponViewController.swift */,
+				DD4AC2DE1E941EB400F77037 /* ListOfCouponsTableViewController.swift */,
+				DD4AC2D11E92CF6A00F77037 /* ViewControllers */,
 				DD4AC2BC1E92CEEE00F77037 /* Coupon App */,
 				DD4AC2BB1E92CEEE00F77037 /* Products */,
 			);
@@ -55,13 +81,25 @@
 			isa = PBXGroup;
 			children = (
 				DD4AC2BD1E92CEEE00F77037 /* AppDelegate.swift */,
-				DD4AC2BF1E92CEEE00F77037 /* ViewController.swift */,
 				DD4AC2C11E92CEEE00F77037 /* Main.storyboard */,
 				DD4AC2C41E92CEEE00F77037 /* Assets.xcassets */,
 				DD4AC2C61E92CEEE00F77037 /* LaunchScreen.storyboard */,
 				DD4AC2C91E92CEEE00F77037 /* Info.plist */,
+				DD4AC3221E95F07100F77037 /* Coupon.xcdatamodeld */,
 			);
 			path = "Coupon App";
+			sourceTree = "<group>";
+		};
+		DD4AC2D11E92CF6A00F77037 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				DD4AC32B1E9C24B200F77037 /* ShopDetailViewController.swift */,
+				DD4AC3291E9C249700F77037 /* CouponDetailsViewController.swift */,
+				DD4AC2CF1E92CF6000F77037 /* LoginViewController.swift */,
+				DD4AC3271E982F8600F77037 /* camera.JPG */,
+				DD4AC2D61E9403BA00F77037 /* background.jpeg */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +165,8 @@
 				DD4AC2C81E92CEEE00F77037 /* LaunchScreen.storyboard in Resources */,
 				DD4AC2C51E92CEEE00F77037 /* Assets.xcassets in Resources */,
 				DD4AC2C31E92CEEE00F77037 /* Main.storyboard in Resources */,
+				DD4AC2D71E9403BA00F77037 /* background.jpeg in Resources */,
+				DD4AC3281E982F8600F77037 /* camera.JPG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,8 +177,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD4AC2C01E92CEEE00F77037 /* ViewController.swift in Sources */,
+				DD4AC2DF1E941EB400F77037 /* ListOfCouponsTableViewController.swift in Sources */,
+				DD4AC2D51E9400CC00F77037 /* AddCouponViewController.swift in Sources */,
+				DD4AC2D01E92CF6000F77037 /* LoginViewController.swift in Sources */,
+				DD4AC32E1E9D442900F77037 /* ImageTableViewCell.swift in Sources */,
 				DD4AC2BE1E92CEEE00F77037 /* AppDelegate.swift in Sources */,
+				DD4AC2D31E94006200F77037 /* ShopNameTableViewController.swift in Sources */,
+				DD4AC32C1E9C24B200F77037 /* ShopDetailViewController.swift in Sources */,
+				DD4AC32A1E9C249700F77037 /* CouponDetailsViewController.swift in Sources */,
+				DD4AC3241E95F07100F77037 /* Coupon.xcdatamodeld in Sources */,
+				DD4AC3301E9D448500F77037 /* CouponListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,8 +352,22 @@
 				DD4AC2CE1E92CEEE00F77037 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		DD4AC3221E95F07100F77037 /* Coupon.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				DD4AC3231E95F07100F77037 /* Coupon.xcdatamodel */,
+			);
+			currentVersion = DD4AC3231E95F07100F77037 /* Coupon.xcdatamodel */;
+			path = Coupon.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = DD4AC2B21E92CEEE00F77037 /* Project object */;
 }

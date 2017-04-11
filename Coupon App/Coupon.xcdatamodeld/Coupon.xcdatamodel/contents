@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CouponDetails" representedClassName="CouponDetails" syncable="YES" codeGenerationType="class">
+        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="couponCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="couponImage" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="couponImageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="couponName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="expiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="onlineOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="shopName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="shop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shop" inverseName="coupons" inverseEntity="Shop" syncable="YES"/>
+    </entity>
+    <entity name="Shop" representedClassName="Shop" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="coupons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CouponDetails" inverseName="shop" inverseEntity="CouponDetails" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CouponDetails" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="Shop" positionX="-45" positionY="45" width="128" height="75"/>
+    </elements>
+</model>
