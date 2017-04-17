@@ -12,13 +12,14 @@ import  CoreData
 class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDelegate  {
     
     
-    var coupons :[CouponDetails] = []
+    //var coupons :[CouponDetails] = []
     
     var couponLists : [NSManagedObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         assignbackground()
+
     }
     func  addCouponSave(aCS:NSManagedObject) {
         
@@ -28,7 +29,7 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        // fetching data from core data
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
             else {
@@ -51,70 +52,71 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
         }
     }
     
+
+    //Delete
     
-    
+//          override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+//          if editingStyle == UITableViewCellEditingStyle.Delete {
+//                couponLists.removeAtIndex(indexPath.row)
+//                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+//            }
+//        }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        print(couponLists.count)
         return couponLists.count
+        
     }
-    
+     // check - future 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        
-        //        var cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
-        //
-        //        let couponNameDetails = couponLists[indexPath.row]
-        //
-        //        //let coupon = self.coupons[indexPath.row]
-        //
-        //        if coupon.couponImage == nil {
-        //
-        //            cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
-        //
-        //        } else {
-        //
-        //        }
-        
-        // camra
-        
-        var cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
-        
-        let couponNameDetails = couponLists[indexPath.row]
-        
+    
+               let couponNameDetails = couponLists[indexPath.row]
+    
         let imgData = couponNameDetails.value(forKey: "couponImage")
-       
-        if imgData != nil {
-            print("image found")
-        }
         
-        cell.couponListLabel.text = couponNameDetails.value(forKeyPath: "couponName") as? String
         
-        guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+        if (imgData == nil) {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
+            
+            
+            cell.couponListLabel.text = couponNameDetails.value(forKeyPath: "couponName") as? String
+            
+            guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+                return cell
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
+            let newexpirydate = dateFormatter.string(from: expiryDate)
+            cell.dateLable.text = newexpirydate
             return cell
         }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
+        else {
+           
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCouponListCell") as! ImageTableViewCell
+            
+            let newImage = UIImage(data:imgData as! Data,scale:1.0)
+            
+            cell.imageView?.image = newImage
+            guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+                return cell
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
+            let newexpirydate = dateFormatter.string(from: expiryDate)
+            cell.dateLabel.text = newexpirydate
+            return cell
+        }
         
-        let newexpirydate = dateFormatter.string(from: expiryDate)
-        
-        cell.dateLable.text = newexpirydate
-        
-        return cell
-    }
-    //Delete
-    
-    //      override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    //      if editingStyle == UITableViewCellEditingStyle.Delete {
-    //            couponLists.removeAtIndex(indexPath.row)
-    //            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-    //        }
-    //    }
-    //
+            }
     
     //Segue
     
@@ -123,8 +125,13 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
             let addCouponVC = segue.destination as! AddCouponViewController
             addCouponVC.delegate = self
         }
-        else {}
-        
+        else {
+            let couponDetailVC = segue.destination as! CouponDetailsViewController
+            
+            let indexPath = self.tableView.indexPathForSelectedRow
+            
+            couponDetailVC.couponSelected = couponLists [(indexPath?.row)!] as! CouponDetails
+}
         
     }
     

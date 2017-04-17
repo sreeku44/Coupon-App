@@ -49,6 +49,9 @@ class ShopNameTableViewController: UITableViewController , AddCouponSaveDelegate
 let managedContext = appDelegate.persistentContainer.viewContext
         
        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CouponDetails")
+        
+        let sortDescriptor = NSSortDescriptor(key: "expiryDate", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
 
         do {
             couponLists = try managedContext.fetch(fetchRequest)
@@ -58,6 +61,7 @@ let managedContext = appDelegate.persistentContainer.viewContext
         print("Could not fetch . \(error), \(error.userInfo)")
         
         }
+       
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
