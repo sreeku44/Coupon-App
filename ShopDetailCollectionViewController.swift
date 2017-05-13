@@ -7,71 +7,107 @@
 //
 
 import UIKit
+import  CoreData
 
 private let reuseIdentifier = "Cell"
 
 class ShopDetailCollectionViewController: UICollectionViewController {
-
+    
+    var shopSelected : String = ""
+    var coupons :[NSManagedObject] = []
+    
+    @IBAction func doneBtnPressed(_ sender: Any) {
+        
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = shopSelected        
+        //future check
+        // checking the shop name in coreData getting all the coupons for the shop
+        let x = coupons.filter{
+            (($0 as! CouponDetails).shopName?.contains(shopSelected))!
+        }
+        
+        coupons = x;
+        
         self.collectionView?.reloadData()
-
-
-                self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        
+        
+        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
     }
-
+    
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
-
+    
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 20
+        
+        return coupons.count
+        
     }
 
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        
+        let couponNameDetails = coupons[indexPath.item]
+        
+        let imgData = couponNameDetails.value(forKey: "couponImage")
+        
+        
+        if (imgData == nil) {
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ShopTextCell", for: indexPath) as! ShopTextCollectionViewCell
+            
+            cell.couponName.text = couponNameDetails.value(forKeyPath: "couponName") as? String
+            
+            guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+                return cell
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
+            let newexpirydate = dateFormatter.string(from: expiryDate)
+            cell.expryDateLbl.text = newexpirydate
+            return cell
+        }
+        else {
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ShopImageCell", for: indexPath) as! ShopNameCollectionViewCell
+            
+            let newImage = UIImage(data:imgData as! Data,scale:1.0)
+            
+            cell.cpnImgView.image = newImage
+            guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+                return cell
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
+            let newexpirydate = dateFormatter.string(from: expiryDate)
+            cell.expryDateLbl.text = newexpirydate
+            return cell
+        }
+        
+    }
     
-        // Configure the cell
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let navigationC = segue.destination as! UINavigationController
+        let couponDetailVC = navigationC.viewControllers.first as! CouponDeatailTableViewController
+        let indexPath = self.collectionView?.indexPathsForSelectedItems?.first
+        //let selCoupon = coupons[(indexPath?.row)!]
+        couponDetailVC.couponSelected =  coupons[(indexPath?.row)!] as! CouponDetails
+    }
     
-        return cell
-    }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
-    }
-    */
-
+    
+    
 }
+
+

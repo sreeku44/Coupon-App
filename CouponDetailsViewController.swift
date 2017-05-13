@@ -47,12 +47,9 @@ class CouponDetailsViewController: UIViewController, mapViewDelegate {
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        let newexpirydate = dateFormatter.string(from: couponSelected.expiryDate as! Date)
+        let newexpirydate = dateFormatter.string(from: couponSelected.expiryDate! as Date)
         self.ExpryDateLabel.text = newexpirydate
 
-        print(couponSelected.couponName)
-        
-        
     }
 
     @IBAction func nearYouBtn(_ sender: Any) {

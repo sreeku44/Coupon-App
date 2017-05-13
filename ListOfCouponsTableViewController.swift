@@ -19,6 +19,7 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
     override func viewDidLoad() {
         super.viewDidLoad()
         assignbackground()
+        
 
     }
     func  addCouponSave(aCS:NSManagedObject) {
@@ -50,17 +51,31 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
+          self.tableView.reloadData()
     }
     
 
     //Delete
     
-//          override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//          if editingStyle == UITableViewCellEditingStyle.Delete {
-//                couponLists.removeAtIndex(indexPath.row)
-//                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-//            }
-//        }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            let appDel = UIApplication.shared.delegate as! AppDelegate
+            let managedContext = appDel.persistentContainer.viewContext
+            managedContext.delete(couponLists[indexPath.row])
+            couponLists.remove(at: indexPath.row)
+            do {
+                try managedContext.save()
+            } catch {}
+            }
+            print("Deleted")
+            
+            //self.couponLists.remove(at: indexPath.row)
+            
+            //self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        self.tableView.reloadData()
+        }
+    
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -68,7 +83,6 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        print(couponLists.count)
         return couponLists.count
         
     }
@@ -118,22 +132,23 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
         
             }
     
+    
     //Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "AddCouponSegue"){
-            let addCouponVC = segue.destination as! AddCouponViewController
+            let navigationC = segue.destination as! UINavigationController
+            let addCouponVC = navigationC.viewControllers.first as! AddCouponViewController
             addCouponVC.delegate = self
         }
         else {
-            let couponDetailVC = segue.destination as! CouponDetailsViewController
-            
+            let navigationC = segue.destination as! UINavigationController
+            let couponDetailVC = navigationC.viewControllers.first as! CouponDeatailTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow
-            
             couponDetailVC.couponSelected = couponLists [(indexPath?.row)!] as! CouponDetails
-}
-        
-    }
+
+        }
+   }
     
     func assignbackground(){
         

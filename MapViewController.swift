@@ -15,7 +15,7 @@ protocol mapViewDelegate  {
     func mapView( mV : Shop)
     
 }
-class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
+class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     
     var delegate : mapViewDelegate?
@@ -45,44 +45,47 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         annotationView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         annotationView.canShowCallout = true
         
-        //adding  buttion for deatails
+        //adding  button for deatails & map
         let button = UIButton(type: .detailDisclosure) as UIButton
         button.addTarget(self, action: #selector(infoButtonPressed), for: .touchUpInside)
         
         annotationView.rightCalloutAccessoryView = button
         return annotationView
     }
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.mapView.showsUserLocation = true
         
         self.title = self.nameOfTheShop
         
-        //location update with CLLocationManager
+        // set up locationmanager , location update with CLLocationManager
         self.locationManager = CLLocationManager ()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.distanceFilter = kCLHeadingFilterNone
         self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.startUpdatingLocation()
-            
-            func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-                if status == .authorizedWhenInUse {
-                    manager.requestLocation()
-                }
-            }
-            
-            func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-                if let location = locations.first {
-                    print("location:: (location)")
-                }
-            }
-            
-            func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-                print("error:: (error)")
-            }
         
+        
+        //Set up map view
         self.mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
         self.mapView.delegate = self
+        
+        locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+
+                }
+        
+        //Zoom to user location
+//        let noLocation = CLLocationCoordinate2D()
+//        let viewRegion = MKCoordinateRegionMakeWithDistance(noLocation, 500, 500)
+//        mapView.setRegion(viewRegion, animated: false)
+        
+        DispatchQueue.main.async {
+            self.locationManager.startUpdatingLocation()
+        }
         
         //To findount what is near me
         let couponRequest = MKLocalSearchRequest()
@@ -101,13 +104,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 if let city = mapItem.placemark.locality,
                     let state = mapItem.placemark.administrativeArea,
                     let postalcode = mapItem.placemark.postalCode
-                                    {
-                                        
+                {
+                    
                     annotation.subtitle = "  \(city) , \(state) \(postalcode) "
                     
                     self.mapView.addAnnotation(annotation)
                     let span = MKCoordinateSpanMake(0.05, 0.05)
                     let region = MKCoordinateRegionMake(mapItem.placemark.coordinate, span)
+                    print (mapItem.placemark.addressDictionary)
                     
                 }
                 
@@ -116,16 +120,61 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }
         
     }
+//    override func viewDidAppear(_ animated: Bool) {
+//        
+//        if CLLocationManager.authorizationStatus() == .notDetermined {
+//            
+//        locationManager.requestAlwaysAuthorization()
+//        }
+//        
+//        else if CLLocationManager.authorizationStatus() == .denied {
+//            
+//            showAlert (" Location service were previously denied. Please enable location services for this app in Settings")
+//        }
+//        else if CLLocationManager.authorizationStatus() == .authorizedAlways{
+//            
+//            locationManager.startUpdatingLocation()
+//        
+//        }
+//        
+//        }
+    //}
+    // optional - setting location manager delegate for self.locationManager.delegate = self
     
+    
+    func locationManager(_manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation()
+        }
+    }
+    // optional - setting location manager delegate for self.locationManager.delegate = self
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if let location = locations.first {
+            let span = MKCoordinateSpanMake(0.4, 0.4)
+            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            self.mapView.setRegion(region, animated: true)
+            self.mapView.showsUserLocation = true
+            
+        }
+    }
+    
+    
+    // optional - setting location manager delegate for self.locationManager.delegate = self
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: (error)")
+        
+    }
+    
+    //user location
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         if view.annotation is MKUserLocation {
             return
         }
         
-        
         self.selectedAnnotation = view.annotation as! MKPointAnnotation
-        
     }
     
     func infoButtonPressed() {
@@ -136,5 +185,5 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
     }
     
-
+    
 }

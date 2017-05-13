@@ -105,12 +105,6 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
         let couponName = self.couponNameTxtField.text!
         let comments = self.commentsTxtField.text!
 
-        if couponName.isEmpty || shopName.isEmpty {
-            
-            // alert box here 
-            
-            return
-        }
         
         
         //text to image
@@ -153,6 +147,11 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
             cd.setValue(imgData, forKey: "couponImage")
         }
         
+//        if couponName.isEmpty || shopName.isEmpty || comments.isEmpty {
+//            
+//            return
+//        }
+
         
         do {
             try managedContext.save()
