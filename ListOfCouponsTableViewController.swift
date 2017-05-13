@@ -12,13 +12,15 @@ import  CoreData
 class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDelegate  {
     
     
-    var coupons :[CouponDetails] = []
+    //var coupons :[CouponDetails] = []
     
     var couponLists : [NSManagedObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         assignbackground()
+        
+
     }
     func  addCouponSave(aCS:NSManagedObject) {
         
@@ -28,7 +30,7 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        // fetching data from core data
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
             else {
@@ -49,10 +51,32 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
+          self.tableView.reloadData()
     }
     
+
+    //Delete
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            let appDel = UIApplication.shared.delegate as! AppDelegate
+            let managedContext = appDel.persistentContainer.viewContext
+            managedContext.delete(couponLists[indexPath.row])
+            couponLists.remove(at: indexPath.row)
+            do {
+                try managedContext.save()
+            } catch {}
+            }
+            print("Deleted")
+            
+            //self.couponLists.remove(at: indexPath.row)
+            
+            //self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        self.tableView.reloadData()
+        }
     
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -60,71 +84,71 @@ class ListOfCouponsTableViewController: UITableViewController, AddCouponSaveDele
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return couponLists.count
+        
     }
-    
+     // check - future 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        
-        //        var cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
-        //
-        //        let couponNameDetails = couponLists[indexPath.row]
-        //
-        //        //let coupon = self.coupons[indexPath.row]
-        //
-        //        if coupon.couponImage == nil {
-        //
-        //            cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
-        //
-        //        } else {
-        //
-        //        }
-        
-        var cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
-        
-        let couponNameDetails = couponLists[indexPath.row]
-        
+    
+               let couponNameDetails = couponLists[indexPath.row]
+    
         let imgData = couponNameDetails.value(forKey: "couponImage")
-       
-        if imgData != nil {
-            print("image found")
-        }
         
-        cell.couponListLabel.text = couponNameDetails.value(forKeyPath: "couponName") as? String
         
-        guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+        if (imgData == nil) {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CouponListCell") as! CouponListTableViewCell
+            
+            
+            cell.couponListLabel.text = couponNameDetails.value(forKeyPath: "couponName") as? String
+            
+            guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+                return cell
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
+            let newexpirydate = dateFormatter.string(from: expiryDate)
+            cell.dateLable.text = newexpirydate
             return cell
         }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
+        else {
+           
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCouponListCell") as! ImageTableViewCell
+            
+            let newImage = UIImage(data:imgData as! Data,scale:1.0)
+            
+            cell.imageView?.image = newImage
+            guard let expiryDate = couponNameDetails.value(forKeyPath: "expiryDate") as? Date else {
+                return cell
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
+            let newexpirydate = dateFormatter.string(from: expiryDate)
+            cell.dateLabel.text = newexpirydate
+            return cell
+        }
         
-        let newexpirydate = dateFormatter.string(from: expiryDate)
-        
-        cell.dateLable.text = newexpirydate
-        
-        return cell
-    }
-    //Delete
+            }
     
-    //      override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    //      if editingStyle == UITableViewCellEditingStyle.Delete {
-    //            couponLists.removeAtIndex(indexPath.row)
-    //            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-    //        }
-    //    }
-    //
     
     //Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "AddCouponSegue"){
-            let addCouponVC = segue.destination as! AddCouponViewController
+            let navigationC = segue.destination as! UINavigationController
+            let addCouponVC = navigationC.viewControllers.first as! AddCouponViewController
             addCouponVC.delegate = self
         }
-        else {}
-        
-        
-    }
+        else {
+            let navigationC = segue.destination as! UINavigationController
+            let couponDetailVC = navigationC.viewControllers.first as! CouponDeatailTableViewController
+            let indexPath = self.tableView.indexPathForSelectedRow
+            couponDetailVC.couponSelected = couponLists [(indexPath?.row)!] as! CouponDetails
+
+        }
+   }
     
     func assignbackground(){
         

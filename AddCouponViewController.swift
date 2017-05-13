@@ -18,7 +18,7 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
     
     var delegate  : AddCouponSaveDelegate?
     var imagePicker :UIImagePickerController!
-    var originalImage :UIImage!
+    var originalImage : UIImage!
     
 
     @IBOutlet var imageView1: UIImageView!
@@ -27,7 +27,6 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
     @IBOutlet var addShopNameTxtField: UITextField!
     @IBOutlet var couponNameTxtField: UITextField!
     @IBOutlet var expiryDateTxtField: UITextField!
-    @IBOutlet var couponCodeTxtField: UITextField!
     @IBOutlet var commentsTxtField: UITextField!
     @IBOutlet var useCamera: UIButton!
     @IBOutlet var imageView: UIImageView!
@@ -38,15 +37,16 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
         assignbackground()
         
         self.imagePicker = UIImagePickerController()
+        self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.delegate = self
         
         
         // set the curent date
-        //        let dateFormatter = DateFormatter()
-        //        dateFormatter.dateStyle = DateFormatter.Style.medium
-        //        expiryDateTxtField.text = dateFormatter.string(from: NSDate() as Date)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = DateFormatter.Style.medium
+                expiryDateTxtField.text = dateFormatter.string(from: NSDate() as Date)
     }
-    
+    //camera - pics
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         self.originalImage = info[UIImagePickerControllerOriginalImage] as! UIImage
@@ -76,13 +76,46 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
             datePicker.addTarget(self, action: #selector(handleDatePicker), for: UIControlEvents.valueChanged)
         }
     }
+    // text to image
+    func textToImage(drawText text: NSString, inImage image: UIImage, atPoint point: CGPoint) -> UIImage {
+        let textColor = UIColor.red
+        let textFont = UIFont(name: "Helvetica Bold", size: 100 )!
+        
+        let scale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
+        
+        let textFontAttributes = [
+            NSFontAttributeName: textFont,
+            NSForegroundColorAttributeName: textColor,
+            ] as [String : Any]
+        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
+        
+        let rect = CGRect(origin: point, size: image.size)
+        text.draw(in: rect, withAttributes: textFontAttributes)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
     
     @IBAction func saveCouponBtnPressed(_ sender: Any) {
         
         let shopName = self.addShopNameTxtField.text!
         let couponName = self.couponNameTxtField.text!
         let comments = self.commentsTxtField.text!
-        //let imageUrl = self.saveImage(intoDocumentsDirectoryAndReturnPath: imageView.image!)
+
+        
+        
+        //text to image
+        //        var image: UIImage
+        //        if (self.imageView.image != nil) {
+        //           image = self.imageView.image!
+        //        }
+        //        else {
+        //            image = textToImage(drawText: couponName as NSString, inImage: UIImage(named:"teal.png")!, atPoint: CGPoint(x:50, y:150))
+        //        }
+
         
         // dateFormatter
         
@@ -101,22 +134,24 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
         let entity = NSEntityDescription.entity(forEntityName: "CouponDetails", in: managedContext)!
         
         let cd = NSManagedObject(entity: entity, insertInto: managedContext)
-        
-        let img = UIImage(named: "camera.JPG")
-        
-        let imgData = UIImagePNGRepresentation(img!)
-        
-        
-        
+    
         cd.setValue(shopName, forKey: "shopName")
         cd.setValue(couponName, forKey: "couponName")
         cd.setValue(expirydate, forKey: "expiryDate")
         cd.setValue(comments, forKeyPath: "comments")
-        cd.setValue(imgData!, forKey: "couponImage")
         
-        //cd.setValue(imageUrl, forKey: "couponImageUrl")
         
-        //self.myEvent.picture = UIImageJPEGRepresentation(chosenImage, 1);
+        if let img = self.imageView.image {
+            //check - future
+            let imgData = UIImagePNGRepresentation(img)
+            cd.setValue(imgData, forKey: "couponImage")
+        }
+        
+//        if couponName.isEmpty || shopName.isEmpty || comments.isEmpty {
+//            
+//            return
+//        }
+
         
         do {
             try managedContext.save()
@@ -124,7 +159,6 @@ class AddCouponViewController: UIViewController, UITextFieldDelegate, UIPickerVi
         catch let error as NSError { print("could not save")
         }
         
-        //self.imageView1.image = self.loadImage(fromDocumentsDirectory: imageUrl)
         self.delegate?.addCouponSave(aCS: cd)
         
         dismiss(animated: true, completion: nil)

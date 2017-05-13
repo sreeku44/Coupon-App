@@ -8,13 +8,69 @@
 
 import UIKit
 
-class CouponDetailsViewController: UIViewController {
+class CouponDetailsViewController: UIViewController, mapViewDelegate {
     
+    var couponSelected :CouponDetails!
+    
+    
+    @IBOutlet var CpnImageView: UIImageView!
+    @IBOutlet var shopNameLabel: UILabel!
+    
+    @IBOutlet var CpnNameCodeLabel: UILabel!
+    
+    @IBOutlet var ExpryDateLabel: UILabel!
+    
+    @IBOutlet var commentsLabel: UILabel!
+    
+    @IBOutlet var nameLabel: UILabel!
+    
+    @IBOutlet var imgLabel : UILabel!
+    
+    func mapView( mV : Shop){}
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.shopNameLabel.text = couponSelected.shopName
+        self.CpnNameCodeLabel.text = couponSelected.couponName
+        self.commentsLabel.text = couponSelected.comments
+        self.nameLabel.text = couponSelected.shopName
+    
+        let imgData = couponSelected.value(forKey: "couponImage")
+        if (imgData != nil) {
+        let newImage = UIImage(data:imgData as! Data,scale:1.0)
+        self.CpnImageView.image = newImage
+        }
+        
+        else  {
+            self.imgLabel.text = " No Image "
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        let newexpirydate = dateFormatter.string(from: couponSelected.expiryDate! as Date)
+        self.ExpryDateLabel.text = newexpirydate
 
     }
+
+    @IBAction func nearYouBtn(_ sender: Any) {
+        
+    }
+
+    @IBAction func doneBtnPressed(_ sender: Any) {
+        
+         dismiss(animated: true, completion: nil)
+        
+    }
+   
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let mapVC = segue.destination as! MapViewController
+         mapVC.nameOfTheShop = couponSelected.shopName
+        
+        
+    }
+
+}
 
 //    class func getUniqueIdentifier() -> String {
 //        var uuid: CFUUIDRef
@@ -47,4 +103,4 @@ class CouponDetailsViewController: UIViewController {
 //        }
 //        Add Comment Collapse
 
-}
+
